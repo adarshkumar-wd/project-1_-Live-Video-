@@ -1,8 +1,10 @@
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 
+dotenv.config();
 const app = express();
 const PORT = 3000;
 
@@ -10,13 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: '*'}));
 
-const API_KEY = process.env.API_KEY;
-const CHANNEL_ID = process.env.CHANNEL_ID;
+// const api = 
+// const CHANNEL_ID = process.env.CHANNEL_ID;
 
 app.get('/live', async (req, res) => {
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${process.env.CHANNEL_ID}&eventType=live&type=video&key=${process.env.API_KEY}`
     );
 
     // console.log("data---",response.data.items);

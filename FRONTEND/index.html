@@ -37,10 +37,10 @@
             try {
                 const response = await fetch('http://localhost:3000/live');
 
-                if (!response.ok) {
+                if (!response) {
                     throw new Error('Failed to fetch live stream data');
                 }
-                
+
                 const data = await response.json();
 
                 const liveStreamDiv = document.getElementById('live-stream');
@@ -51,6 +51,7 @@
                         <iframe
                             src="${data.liveVideoURL}?autoplay=1"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            frameborder="0"
                             allowfullscreen>
                         </iframe>
                     `;
