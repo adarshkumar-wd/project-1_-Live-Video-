@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Live Stream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+        #live-stream {
+            margin-top: 20px;
+        }
+        iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border: none;
+        }
+        .error {
+            color: red;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Live Stream</h1>
+    <div id="live-stream">
+        <p>Loading live stream...</p>
+    </div>
+
+    <script>
+        async function fetchLiveStream() {
+            try {
+                const response = await fetch('http://localhost:3000/live');
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch live stream data');
+                }
+                
+                const data = await response.json();
+
+                const liveStreamDiv = document.getElementById('live-stream');
+
+                if (data.liveVideoURL) {
+                    liveStreamDiv.innerHTML = `
+                        <h2>${data.liveVideoTitle}</h2>
+                        <iframe
+                            src="${data.liveVideoURL}?autoplay=1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    `;
+                } else {
+                    liveStreamDiv.innerHTML = '<p>No live stream available currently.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching live stream:', error);
+                document.getElementById('live-stream').innerHTML = '<p class="error">Error loading stream. Please try again later.</p>';
+            }
+        }
+
+        fetchLiveStream();
+    </script>
+</body>
+</html>
